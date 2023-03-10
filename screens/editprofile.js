@@ -47,7 +47,7 @@ export default function Editprofile(props) {
   let userData = async () => {
     console.log('..........................in get user----------------------');
     let res = await axios
-      .get(`${url}/user/getOneUser/` + id)
+      .get(`${process.env.API_URL}/user/getOneUser/` + id)
       .then(res => {
         // const fName  = res.data[0]
         // setName(fName)
@@ -67,7 +67,7 @@ export default function Editprofile(props) {
   let updateUser = async () => {
     console.log('..........................in get user----------------------');
     let res = await axios
-      .put(`${url}/user/updateUser/` + id, {
+      .put(`${process.env.API_URL}/user/updateUser/` + id, {
         name: Name,
         email: email,
         phone: phone,

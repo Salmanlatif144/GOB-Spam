@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 // import api from '../axios';
 import axios from 'axios';
 import {
@@ -16,9 +16,9 @@ import {
   responsiveWidth,
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
-import { gradients } from './constants';
-import { globalstyles } from './constants';
-import PopupDialog, { SlideAnimation } from 'react-native-popup-dialog';
+import {gradients} from './constants';
+import {globalstyles} from './constants';
+import PopupDialog, {SlideAnimation} from 'react-native-popup-dialog';
 
 export default function Signup(props) {
   const [Name, setName] = useState('');
@@ -58,41 +58,42 @@ export default function Signup(props) {
     if (password !== confirmPassword) {
       setcPassword(true);
       return;
+    } else {
+      register();
     }
-
-    else {
-     register();
-    }
-
   };
 
   // calling api
   const register = async () => {
-    console.log("in register")
-    let res = await axios.post(`${url}/user/register`, {firstName:Name, lastName:lName, email:email, phone:phone,
-                                              password:password, userType:"Employee", verified: false, 
-                                              status: "unblock"})
-    .then ((res) => {
+    console.log('in register');
+    let res = await axios
+      .post(`${process.env.API_URL}/user/register`, {
+        firstName: Name,
+        lastName: lName,
+        email: email,
+        phone: phone,
+        password: password,
+        userType: 'Employee',
+        verified: false,
+        status: 'unblock',
+      })
+      .then(res => {
+        setError(false);
+        setsignup(true);
+        props.navigation.navigate('Login');
+        setName('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+      })
+      .catch(error => {
+        setError(true);
+        setErrorDes(error.response.data);
+        console.log('error occured');
+        console.log('error', error.response.data);
+      });
+  };
 
-      setError(false)
-      setsignup(true);
-      props.navigation.navigate('Login');
-      setName('');
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
-    }
-      
-    )
-    .catch((error) => {
-      setError(true);
-      setErrorDes(error.response.data);
-        console.log("error occured")
-        console.log("error",error.response.data);
-    })
-  }
-
-  
   const handleHideAlert = () => {
     setShowAlert(false);
   };
@@ -110,15 +111,14 @@ export default function Signup(props) {
     // props.navigation.navigate('Login');
   };
 
-
   return (
-    <LinearGradient colors={gradients} style={{ height: '100%' }}>
-      <ScrollView contentContainerStyle={{ flex: 1 }}>
-        <View style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+    <LinearGradient colors={gradients} style={{height: '100%'}}>
+      <ScrollView contentContainerStyle={{flex: 1}}>
+        <View style={{display: 'flex', alignItems: 'center', flex: 1}}>
           <View style={styles.logocontainer}>
             <Image
               source={require('../assets/logo.png')}
-              style={{ height: responsiveHeight(20), resizeMode: 'contain' }}
+              style={{height: responsiveHeight(20), resizeMode: 'contain'}}
             />
             <Text style={globalstyles.text}>Sign up</Text>
             <TextInput
@@ -183,12 +183,12 @@ export default function Signup(props) {
 
             <View style={globalstyles.linecontainer}>
               <View style={globalstyles.line} />
-              <Text style={{ color: 'black', marginHorizontal: 5 }}>Or</Text>
+              <Text style={{color: 'black', marginHorizontal: 5}}>Or</Text>
               <View style={globalstyles.line} />
             </View>
 
             <View style={styles.logincont}>
-              <Text style={{ color: 'black' }}>Already have an account</Text>
+              <Text style={{color: 'black'}}>Already have an account</Text>
               <Text
                 style={{
                   color: '#338B47',
@@ -208,7 +208,7 @@ export default function Signup(props) {
 
       <PopupDialog
         visible={showAlert}
-        dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}
+        dialogAnimation={new SlideAnimation({slideFrom: 'bottom'})}
         onTouchOutside={handleHideAlert}>
         <View style={globalstyles.alert}>
           <Text style={globalstyles.alertTitle}>Warning</Text>
@@ -224,7 +224,7 @@ export default function Signup(props) {
       </PopupDialog>
       <PopupDialog
         visible={showPassword}
-        dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}
+        dialogAnimation={new SlideAnimation({slideFrom: 'bottom'})}
         onTouchOutside={handlePassword}>
         <View style={globalstyles.alert}>
           <Text style={globalstyles.alertTitle}>Warning</Text>
@@ -240,7 +240,7 @@ export default function Signup(props) {
       </PopupDialog>
       <PopupDialog
         visible={cPassword}
-        dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}
+        dialogAnimation={new SlideAnimation({slideFrom: 'bottom'})}
         onTouchOutside={handlecPassword}>
         <View style={globalstyles.alert}>
           <Text style={globalstyles.alertTitle}>Warning</Text>
@@ -256,13 +256,11 @@ export default function Signup(props) {
       </PopupDialog>
       <PopupDialog
         visible={error}
-        dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}
+        dialogAnimation={new SlideAnimation({slideFrom: 'bottom'})}
         onTouchOutside={handleError}>
         <View style={globalstyles.alert}>
           <Text style={globalstyles.alertTitle}>Warning</Text>
-          <Text style={globalstyles.alertMessage}>
-            {errorDes}
-          </Text>
+          <Text style={globalstyles.alertMessage}>{errorDes}</Text>
           <TouchableOpacity
             style={globalstyles.alertButton}
             onPress={handleError}>
@@ -272,7 +270,7 @@ export default function Signup(props) {
       </PopupDialog>
       <PopupDialog
         visible={signup}
-        dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}
+        dialogAnimation={new SlideAnimation({slideFrom: 'bottom'})}
         onTouchOutside={handlesignup}>
         <View style={globalstyles.alert}>
           <Text style={globalstyles.successalertTitle}>Congartulations</Text>

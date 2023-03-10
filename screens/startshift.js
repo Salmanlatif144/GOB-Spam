@@ -23,7 +23,7 @@ export default function Startshift(props) {
   const handleStartPress = () => {
     Geolocation.getCurrentPosition(
       position => {
-        console.log("position",position);
+        console.log('position', position);
       },
       error => {
         console.log(error);
@@ -49,9 +49,11 @@ export default function Startshift(props) {
   const checkLocationServices = () => {
     Geolocation.getCurrentPosition(
       position => {
-        Geolocation.getCurrentPosition(info => console.log("heyyy i m cords",info.coords));
+        Geolocation.getCurrentPosition(info =>
+          console.log('heyyy i m cords', info.coords),
+        );
         props.navigation.navigate('Timer', {location: position.coords});
-        console.log("position",position);
+        console.log('position', position);
         handleStartPress();
       },
       error => {

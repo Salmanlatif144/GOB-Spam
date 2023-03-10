@@ -9,28 +9,27 @@ import {
 } from 'react-native-responsive-dimensions';
 import Geolocation from '@react-native-community/geolocation';
 import {globalstyles} from './constants';
-import { AuthContext } from '../App';
+import {AuthContext} from '../App';
 
 export default function Timer(props) {
-  const {id, setActiveId } = useContext(AuthContext);
+  const {id, setActiveId} = useContext(AuthContext);
   const [startTime, setStartTime] = useState(new Date());
   const [timer, setTimer] = useState(0);
-  const [shift, setShift] = useState(false)
+  const [shift, setShift] = useState(false);
   let shiftId;
   const [timerId, setTimerId] = useState(null); // added state to hold timer interval ID
-
 
   const location = props.route.params?.location;
   url = process.env.API_URL;
 
   useEffect(() => {
-    const date = new Date()
+    const date = new Date();
     setStartTime(date);
-    console.log("start time", startTime, "date", date)
-    console.log(".........................id..................",id);
-    if(id){
+    console.log('start time', startTime, 'date', date);
+    console.log('.........................id..................', id);
+    if (id) {
       startShift();
-      console.log('............in use effect shift..............', shiftId)
+      console.log('............in use effect shift..............', shiftId);
     }
     // setFormattedStartTime(time)
     setTimerId(
@@ -44,54 +43,65 @@ export default function Timer(props) {
     // }
 
     // Call the API every 5 minutes
-    const interval = setInterval(() => {
-      console.log(".........................shift id..................",shiftId);
-      if (shiftId){
-        updateLocation();
-      }
-    }, 60 * 1000); // 5 minutes in milliseconds
+    // const interval = setInterval(() => {
+    //   console.log(
+    //     '.........................shift id..................',
+    //     shiftId,
+    //   );
+    //   if (shiftId) {
+    //     updateLocation();
+    //   }
+    // }, 60 * 1000); // 5 minutes in milliseconds
 
     // Clear the interval when the component unmounts
-    return () => {clearInterval(interval);
-                  clearInterval(timerId);} // clear timer interval on unmount
+    return () => {
+      clearInterval(interval);
+      clearInterval(timerId);
+    }; // clear timer interval on unmount
   }, []);
 
   // calling start shift api
   const startShift = async () => {
-    console.log('..........................in start Shift----------------------')
-    let res = await axios.post(`${url}/shifts/startShift`, {userID:id,checkinTime:startTime, checkinLocation:location})
-    .then ((res) => {
-      shiftId = res.data._id;
-      setShift(res.data._id);
-      console.log("in start shift res.data.id =" , res.data._id);
-      console.log("in start shift id =" , shift);
-    }
-      
-    )
-    .catch((error) => {
-      // setErrorMsg(error.response.data);
-        console.log("error occured")
-        console.log("error",error.response.data);
-    })
-  }
+    console.log(
+      '..........................in start Shift----------------------',
+    );
+    let res = await axios
+      .post(`${process.env.API_URL}/shifts/startShift`, {
+        userID: id,
+        checkinTime: startTime,
+        checkinLocation: location,
+      })
+      .then(res => {
+        shiftId = res.data._id;
+        setShift(res.data._id);
+        console.log('in start shift res.data.id =', res.data._id);
+        console.log('in start shift id =', shift);
+      })
+      .catch(error => {
+        // setErrorMsg(error.response.data);
+        console.log('error occured');
+        console.log('error', error.response.data);
+      });
+  };
 
   // calling update location api
-  const updateLocation = async () => {
-    console.log('..........................in update location----------------------', shiftId)
-    console.log("shift id in update data....................."+ shiftId)
-    let res = await axios.put(`${url}/shifts/changeLocation/${shiftId}`, {lastLocation:location})
-    .then ((res) => {
-     console.log("location updated");
-    }
-      
-    )
-    .catch((error) => {
-      // setErrorMsg(error.response.data);
-        console.log("error occured")
-        console.log("error",error.response.data);
-    })
-  }
-
+  // const updateLocation = async () => {
+  //   console.log(
+  //     '..........................in update location----------------------',
+  //     shiftId,
+  //   );
+  //   console.log('shift id in update data.....................' + shiftId);
+  //   let res = await axios
+  //     .put(`${url}/shifts/changeLocation/${shiftId}`, {lastLocation: location})
+  //     .then(res => {
+  //       console.log('location updated');
+  //     })
+  //     .catch(error => {
+  //       // setErrorMsg(error.response.data);
+  //       console.log('error occured');
+  //       console.log('error', error.response.data);
+  //     });
+  // };
 
   const formatTime = timeInSeconds => {
     const hours = Math.floor(timeInSeconds / 3600);
@@ -106,12 +116,12 @@ export default function Timer(props) {
     clearInterval(timerId); // stop the timer
     const endTime = new Date();
     const totalTime = timer;
-    console.log("in end shift handler ", shiftId);
+    console.log('in end shift handler ', shiftId);
     props.navigation.navigate('End', {
       startTime: startTime.toISOString(),
       endTime: endTime.toISOString(),
-      shiftId:shift,
-      location : location,
+      shiftId: shift,
+      location: location,
       totalTime,
       // console.log(props)
     });

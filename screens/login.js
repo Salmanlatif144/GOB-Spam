@@ -16,36 +16,39 @@ import {
 } from 'react-native-responsive-dimensions';
 import {gradients} from './constants';
 import {globalstyles} from './constants';
-import { AuthContext } from '../App';
+import {AuthContext} from '../App';
 
 export default function Login(props) {
-  const {id, setActiveId } = useContext(AuthContext);
+  const {id, setActiveId} = useContext(AuthContext);
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
-  
+  url = process.env.API_URL;
+  console.log(url);
   // calling login
   const login = async () => {
-    console.log('in login')
-    url = process.env.API_URL;
+    console.log('in login');
+
     // let res = await axios.post(`${apiUrl}/user/login`, {email:email,password:password})
-    let res = await axios.post(`${url}/user/login`, {email:email,password:password})
-    .then ((res) => {
-      setActiveId(res.data._id);
-      console.log("id", id);
-      props.navigation.navigate('Startshift');
-      // console.log(id)
-      setErrorMsg('');
-    }
-      
-    )
-    .catch((error) => {
-      setErrorMsg(error.response.data);
-        console.log("error occured")
-        console.log("error",error.response.data);
-    })
-  }
+    let res = await axios
+      .post(`${process.env.API_URL}/user/login`, {
+        email: email,
+        password: password,
+      })
+      .then(res => {
+        setActiveId(res.data._id);
+        console.log('id', id);
+        props.navigation.navigate('Startshift');
+        // console.log(id)
+        setErrorMsg('');
+      })
+      .catch(error => {
+        setErrorMsg(error.response.data);
+        console.log('error occured');
+        console.log('error', error.response.data);
+      });
+  };
 
   const handleSubmit = () => {
     if (email === '' || password === '') {
@@ -102,7 +105,6 @@ export default function Login(props) {
           </TouchableOpacity>
         </View>
       </View>
-      
     </LinearGradient>
   );
 }

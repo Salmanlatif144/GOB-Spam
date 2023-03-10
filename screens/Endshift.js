@@ -29,7 +29,6 @@ export default function Endshift(props) {
     return `${hours.toString().padStart(2, '0')}:${minutes
       .toString()
       .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
   };
   useEffect(() => {
     endShift();
@@ -56,23 +55,30 @@ export default function Endshift(props) {
     minute: 'numeric',
     hour12: true,
   });
-  const hours = formatTime(props.route.params.totalTime)
+  const hours = formatTime(props.route.params.totalTime);
 
   // end Shift api
   const endShift = async () => {
-    console.log('..........................in end Shift----------------------', props.route.params.shiftId)
-    let res = await axios.put(`${url}/shifts/endShift/`+props.route.params.shiftId, {checkoutTime:endTime, checkoutLocation:props.route.params.location, totalHours:hours.toString()})
-    .then ((res) => {
-     
-    }
-      
-    )
-    .catch((error) => {
-      // setErrorMsg(error.response.data);
-        console.log("error occured")
-        console.log("error",error.response.data);
-    })
-  }
+    console.log(
+      '..........................in end Shift----------------------',
+      props.route.params.shiftId,
+    );
+    let res = await axios
+      .put(
+        `${process.env.API_URL}/shifts/endShift/` + props.route.params.shiftId,
+        {
+          checkoutTime: endTime,
+          checkoutLocation: props.route.params.location,
+          totalHours: hours.toString(),
+        },
+      )
+      .then(res => {})
+      .catch(error => {
+        // setErrorMsg(error.response.data);
+        console.log('error occured');
+        console.log('error', error.response.data);
+      });
+  };
 
   return (
     <LinearGradient colors={['#E4F9E9', '#fff']} style={{height: '100%'}}>
