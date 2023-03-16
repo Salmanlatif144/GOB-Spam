@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 // import api from '../axios';
 import axios from 'axios';
 import {
@@ -21,6 +21,17 @@ import {globalstyles} from './constants';
 import PopupDialog, {SlideAnimation} from 'react-native-popup-dialog';
 
 export default function Signup(props) {
+  // useEffect(() => {
+  //   props.navigation.getParent()?.setOptions({
+  //     tabBarStyle: {
+  //       display: 'none',
+  //     },
+  //   });
+  //   return () =>
+  //     props.navigation.getParent()?.setOptions({
+  //       tabBarStyle: undefined,
+  //     });
+  // }, [props.navigation]);
   const [Name, setName] = useState('');
   const [lName, setlName] = useState('');
 
@@ -278,7 +289,13 @@ export default function Signup(props) {
           <TouchableOpacity
             style={globalstyles.alertButton}
             onPress={handlesignup}>
-            <Text style={globalstyles.alertButtonText}>Okay</Text>
+            <Text
+              style={globalstyles.alertButtonText}
+              onPress={() => {
+                props.navigation.navigate('Login');
+              }}>
+              Okay
+            </Text>
           </TouchableOpacity>
         </View>
       </PopupDialog>

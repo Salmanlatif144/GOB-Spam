@@ -1,5 +1,5 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
-import React, { useContext, useState } from "react";
+import React, {useContext, useState} from 'react';
 import Login from './screens/login';
 import Startshift from './screens/startshift';
 import Timer from './screens/timer';
@@ -24,6 +24,7 @@ import A from './assets/bck.png';
 import Editprofile from './screens/editprofile';
 import Home from './screens/home';
 import Allshifts from './screens/allshifts';
+import LinearGradient from 'react-native-linear-gradient';
 // import dotenv from '.env';
 
 const Tab = createBottomTabNavigator();
@@ -33,18 +34,7 @@ const Stack = createStackNavigator();
 export const AuthContext = React.createContext();
 function ProfileStack() {
   return (
-    
     <Stack.Navigator>
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Signup"
-        component={Signup}
-        options={{headerShown: false}}
-      />
       <Stack.Screen
         name="Startshift"
         component={Startshift}
@@ -105,75 +95,114 @@ function ShiftsStack() {
   );
 }
 
+function Tab_Navigator() {
+  return (
+    <Tab.Navigator
+      initialRouteName="Profile"
+      tabBarOptions={{
+        activeTintColor: 'black',
+        inactiveTintColor: 'gray',
+        activeBackgroundColor: '#93cca0',
+        inactiveBackgroundColor: '#74ab81',
+        tabBarShowLabel: false,
+
+        // style: {
+
+        //   backgroundColor: '#338B47',
+        //   paddingBottom: 3,
+        // },
+      }}
+      screenOptions={{
+        tabBarHideOnKeyboard: true,
+      }}>
+      <Tab.Screen
+        name="Home"
+        component={HomeStack}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({color, size}) => (
+            <Image
+              source={require('./assets/home.png')}
+              style={styles.tabimg}
+            />
+          ),
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileStack}
+        options={{
+          tabBarLabel: 'Start',
+          tabBarIcon: ({color, size}) => (
+            <Image
+              source={require('./assets/main.png')}
+              style={styles.tabimg}
+            />
+          ),
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Shiftss"
+        component={ShiftsStack}
+        options={{
+          tabBarLabel: 'Shifts',
+          tabBarIcon: ({color, size}) => (
+            <Image
+              source={require('./assets/shifts.png')}
+              style={styles.tabimg}
+            />
+          ),
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="User"
+        component={UserStack}
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({color, size}) => (
+            <Image
+              source={require('./assets/user.png')}
+              style={styles.tabimg}
+            />
+          ),
+          headerShown: false,
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
+
 export default function App({children}) {
   // dotenv.config();
   const [id, setId] = useState(false);
   const value = {
-    setActiveId : setId,
-    id : id,
-  }
+    setActiveId: setId,
+    id: id,
+  };
   return (
     <AuthContext.Provider value={value}>
-    <NavigationContainer>
-      <Tab.Navigator initialRouteName="Login">
-        <Tab.Screen
-          name="Home"
-          component={HomeStack}
-          options={{
-            tabBarLabel: 'Home',
-            tabBarIcon: ({color, size}) => (
-              <Image
-                source={require('./assets/home.png')}
-                style={styles.tabimg}
-              />
-            ),
-            headerShown: false,
-          }}
-        />
-        <Tab.Screen
-          name="Profile"
-          component={ProfileStack}
-          options={{
-            tabBarLabel: 'Profile',
-            tabBarIcon: ({color, size}) => (
-              <Image
-                source={require('./assets/main.png')}
-                style={styles.tabimg}
-              />
-            ),
-            headerShown: false,
-          }}
-        />
-        <Tab.Screen
-          name="User"
-          component={UserStack}
-          options={{
-            tabBarLabel: 'User',
-            tabBarIcon: ({color, size}) => (
-              <Image
-                source={require('./assets/user.png')}
-                style={styles.tabimg}
-              />
-            ),
-            headerShown: false,
-          }}
-        />
-        <Tab.Screen
-          name="Shiftss"
-          component={ShiftsStack}
-          options={{
-            tabBarLabel: 'Shiftss',
-            tabBarIcon: ({color, size}) => (
-              <Image
-                source={require('./assets/shifts.png')}
-                style={styles.tabimg}
-              />
-            ),
-            headerShown: false,
-          }}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Signup"
+            component={Signup}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Navigator"
+            component={Tab_Navigator}
+            options={{headerShown: false}}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
     </AuthContext.Provider>
   );
 }
@@ -201,4 +230,3 @@ export default function App({children}) {
 const styles = StyleSheet.create({
   tabimg: {},
 });
-

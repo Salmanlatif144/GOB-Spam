@@ -161,4 +161,46 @@ export const globalstyles = StyleSheet.create({
     fontSize: responsiveFontSize(4),
     fontWeight: 'bold',
   },
+
+  //Allshifts screen
+  shiftcard: {
+    backgroundColor: '#fff',
+    width: responsiveWidth(70),
+    // backgroundColor: 'green',
+    borderRadius: 10,
+    marginTop: responsiveFontSize(4),
+  },
+  textcontainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: responsiveFontSize(1),
+  },
+  boldtext: {
+    fontSize: responsiveFontSize(2),
+    fontWeight: 'bold',
+    color: 'black',
+  },
+  normaltext: {
+    fontSize: responsiveFontSize(2),
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  //home
+  imageContainer2: {
+    borderRadius: 80,
+    width: 160,
+    height: 160,
+    padding: responsiveFontSize(2),
+    marginBottom: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    top: responsiveHeight(-9),
+  },
+  upercontainer2: {
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    padding: responsiveFontSize(2),
+  },
 });

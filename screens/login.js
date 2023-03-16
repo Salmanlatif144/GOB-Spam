@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import {React, useState, useContext} from 'react';
+import {React, useState, useContext, useEffect} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   responsiveHeight,
@@ -19,9 +19,20 @@ import {globalstyles} from './constants';
 import {AuthContext} from '../App';
 
 export default function Login(props) {
+  // useEffect(() => {
+  //   props.navigation.getParent()?.setOptions({
+  //     tabBarStyle: {
+  //       display: 'none',
+  //     },
+  //   });
+  //   return () =>
+  //     props.navigation.getParent()?.setOptions({
+  //       tabBarStyle: undefined,
+  //     });
+  // }, [props.navigation]);
   const {id, setActiveId} = useContext(AuthContext);
-  const [email, setemail] = useState('');
-  const [password, setpassword] = useState('');
+  const [email, setemail] = useState('salmanwains463@gmail.com');
+  const [password, setpassword] = useState('12345678');
   const [errorMsg, setErrorMsg] = useState('');
 
   url = process.env.API_URL;
@@ -39,7 +50,8 @@ export default function Login(props) {
       .then(res => {
         setActiveId(res.data._id);
         console.log('id', id);
-        props.navigation.navigate('Startshift');
+        // props.navigation.navigate('Navigator');
+        props.navigation.replace('Navigator');
         // console.log(id)
         setErrorMsg('');
       })

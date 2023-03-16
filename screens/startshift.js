@@ -8,7 +8,7 @@ import {
   Pressable,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native';
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   responsiveHeight,
@@ -19,7 +19,19 @@ import {globalstyles} from './constants';
 import Geolocation from '@react-native-community/geolocation';
 
 export default function Startshift(props) {
+  useEffect(() => {
+    props.navigation.getParent()?.setOptions({
+      tabBarStyle: {
+        display: 'flex',
+      },
+    });
+    return () =>
+      props.navigation.getParent()?.setOptions({
+        tabBarStyle: undefined,
+      });
+  }, [props.navigation]);
   // const [startTime, setStartTime] = useContext(AuthContext);
+  console.log('hsdiuh');
   const handleStartPress = () => {
     Geolocation.getCurrentPosition(
       position => {
