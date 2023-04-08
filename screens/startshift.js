@@ -19,23 +19,19 @@ import {globalstyles} from './constants';
 import Geolocation from '@react-native-community/geolocation';
 
 export default function Startshift(props) {
-  useEffect(() => {
-    props.navigation.getParent()?.setOptions({
-      tabBarStyle: {
-        display: 'flex',
-      },
-    });
-    return () =>
-      props.navigation.getParent()?.setOptions({
-        tabBarStyle: undefined,
-      });
-  }, [props.navigation]);
-  // const [startTime, setStartTime] = useContext(AuthContext);
+  // const [status, setStatus] = useState('Ongoing');
+  const [onGoing, setonGoing] = useState(false);
   console.log('hsdiuh');
+
   const handleStartPress = () => {
+    setonGoing(!onGoing);
     Geolocation.getCurrentPosition(
       position => {
-        console.log('position', position);
+        const currentTime = new Date().toLocaleTimeString();
+        const currentDate = new Date().toLocaleDateString();
+        console.log(`Current date: ${currentDate}`);
+        console.log(`Current time: ${currentTime}`);
+        console.log('Position:', position);
       },
       error => {
         console.log(error);
@@ -50,13 +46,31 @@ export default function Startshift(props) {
           ],
         );
       },
-      // {
-      //   enableHighAccuracy: true,
-      //   timeout: 20000,
-      //   maximumAge: 1000,
-      // },
     );
   };
+
+  // const handleStartPress = () => {
+  //   setonGoing(!onGoing);
+  //   Geolocation.getCurrentPosition(
+  //     position => {
+  //       console.log('position', position);
+  //     },
+
+  //     error => {
+  //       console.log(error);
+  //       Alert.alert(
+  //         'Error',
+  //         'Please enable location services to start the shift',
+  //         [
+  //           {
+  //             text: 'OK',
+  //             onPress: () => console.log('OK Pressed'),
+  //           },
+  //         ],
+  //       );
+  //     },
+  //   );
+  // };
 
   const checkLocationServices = () => {
     Geolocation.getCurrentPosition(
@@ -64,7 +78,7 @@ export default function Startshift(props) {
         Geolocation.getCurrentPosition(info =>
           console.log('heyyy i m cords', info.coords),
         );
-        props.navigation.navigate('Timer', {location: position.coords});
+        // props.navigation.navigate('Timer', {location: position.coords});
         console.log('position', position);
         handleStartPress();
       },
@@ -94,7 +108,10 @@ export default function Startshift(props) {
           // top: responsiveHeight(15),
         }}>
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={styles.text}>Start a new Shift!</Text>
+          <Text style={styles.text}>
+            {' '}
+            {onGoing ? 'End Current Shift' : 'Start a new Shift'}{' '}
+          </Text>
         </View>
         <View>
           <TouchableOpacity
@@ -102,7 +119,7 @@ export default function Startshift(props) {
             onPress={() => {
               checkLocationServices();
             }}>
-            <Text style={styles.buttonText}>START</Text>
+            <Text style={styles.buttonText}> {onGoing ? 'End' : 'Start'} </Text>
           </TouchableOpacity>
         </View>
       </View>
