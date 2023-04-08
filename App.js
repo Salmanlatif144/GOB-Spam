@@ -9,6 +9,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Signup from './screens/signup';
 import MapScreen from './screens/MapScreen';
 import Endshift from './screens/Endshift';
+import Setting from './screens/setting';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -25,6 +26,7 @@ import Editprofile from './screens/editprofile';
 import Home from './screens/home';
 import Allshifts from './screens/allshifts';
 import LinearGradient from 'react-native-linear-gradient';
+import Bottomtab from './screens/bottomtab';
 // import dotenv from '.env';
 
 const Tab = createBottomTabNavigator();
@@ -106,24 +108,25 @@ function Tab_Navigator() {
         inactiveBackgroundColor: '#74ab81',
         tabBarShowLabel: false,
 
-        // style: {
-
-        //   backgroundColor: '#338B47',
-        //   paddingBottom: 3,
-        // },
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40,
       }}
       screenOptions={{
         tabBarHideOnKeyboard: true,
+        tabBarStyle: {
+          backgroundColor: 'green',
+          height: 50,
+        },
       }}>
       <Tab.Screen
         name="Home"
         component={HomeStack}
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: ({color, size}) => (
+          tabBarIcon: ({focused}) => (
             <Image
               source={require('./assets/home.png')}
-              style={styles.tabimg}
+              style={{tintColor: focused ? '#338B47' : 'black'}}
             />
           ),
           headerShown: false,
@@ -134,10 +137,14 @@ function Tab_Navigator() {
         component={ProfileStack}
         options={{
           tabBarLabel: 'Start',
-          tabBarIcon: ({color, size}) => (
+          tabBarIcon: ({focused}) => (
             <Image
               source={require('./assets/main.png')}
-              style={styles.tabimg}
+              style={{
+                tintColor: focused ? '#338B47' : 'black',
+                borderBottomWidth: focused ? 2 : 0,
+                borderBottomColor: focused ? '#338B47' : 'transparent',
+              }}
             />
           ),
           headerShown: false,
@@ -148,10 +155,10 @@ function Tab_Navigator() {
         component={ShiftsStack}
         options={{
           tabBarLabel: 'Shifts',
-          tabBarIcon: ({color, size}) => (
+          tabBarIcon: ({focused}) => (
             <Image
               source={require('./assets/shifts.png')}
-              style={styles.tabimg}
+              style={{tintColor: focused ? '#338B47' : 'black'}}
             />
           ),
           headerShown: false,
@@ -162,10 +169,10 @@ function Tab_Navigator() {
         component={UserStack}
         options={{
           tabBarLabel: 'Profile',
-          tabBarIcon: ({color, size}) => (
+          tabBarIcon: ({focused}) => (
             <Image
               source={require('./assets/user.png')}
-              style={styles.tabimg}
+              style={{tintColor: focused ? '#338B47' : 'black'}}
             />
           ),
           headerShown: false,
@@ -185,7 +192,7 @@ export default function App({children}) {
   return (
     <AuthContext.Provider value={value}>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName="Navigator">
           <Stack.Screen
             name="Login"
             component={Login}
@@ -198,12 +205,14 @@ export default function App({children}) {
           />
           <Stack.Screen
             name="Navigator"
-            component={Tab_Navigator}
+            component={Bottomtab}
             options={{headerShown: false}}
           />
         </Stack.Navigator>
       </NavigationContainer>
     </AuthContext.Provider>
+
+    // <Setting />
   );
 }
 // export default function App() {
@@ -230,3 +239,9 @@ export default function App({children}) {
 const styles = StyleSheet.create({
   tabimg: {},
 });
+
+// <Stack.Screen
+// name="Login"
+// component={Login}
+// options={{headerShown: false}}
+// />
